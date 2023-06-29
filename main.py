@@ -25,6 +25,7 @@ def generate():
 def delete():
     website_entry.delete(0,END)
     password_entry.delete(0,END)
+    email_entry.delete(0,END)
 def save():
     is_okay = messagebox.askokcancel(title=website_entry.get(), message=f"These are the entered details:\nEmail: {email_entry.get()}\nPassword: {password_entry.get()}\nProceed?")
     if (len(email_entry.get())==0 or len(password_entry.get())==0 or len(website_entry.get())==0) and is_okay:
