@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 import random
 #Password Generator Project
 def generate():
@@ -50,9 +51,13 @@ password.grid(row=3,column=0)
 website_entry = Entry(width=43)
 website_entry.grid(row=1,column=1,columnspan=2)
 website_entry.focus()
-email_entry = Entry(width=43)
+# ---- field-----
+# email_entry = Entry(width=43)
+# email_entry.grid(row=2,column=1,columnspan=2)
+# email_entry.insert(0,"abc@xyz.com")
+# ---- dropdown ----
+email_entry = ttk.Combobox(values=["abc@gmail.com","abc@yahoo.com"],width=40)
 email_entry.grid(row=2,column=1,columnspan=2)
-email_entry.insert(0,"abc@xyz.com")
 password_entry = Entry(width=33)
 password_entry.grid(row=3,column=1)
 # Button
