@@ -4,9 +4,13 @@ def delete():
     website_entry.delete(0,END)
     password_entry.delete(0,END)
 def save():
-    with open("data.txt",mode="a") as f:
-        f.write(f"{website_entry.get()} | {email_entry.get()} | {password_entry.get()}\n")
-    delete()
+    is_okay = messagebox.askokcancel(title=website_entry.get(), message=f"These are the entered details:\nEmail: {email_entry.get()}\nPassword: {password_entry.get()}\nProceed?")
+    if (len(email_entry.get())==0 or len(password_entry.get())==0 or len(website_entry.get())==0) and is_okay:
+        messagebox.showwarning(title="Oops!!",message="Dont leave the fields empty")
+    elif is_okay:
+        with open("data.txt",mode="a") as f:
+            f.write(f"{website_entry.get()} | {email_entry.get()} | {password_entry.get()}\n")
+        delete()
 window = Tk()
 window.title("Password Manager")
 window.config(padx=50,pady=50)
