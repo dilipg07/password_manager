@@ -13,6 +13,7 @@ def generate():
 
     _list = [[random.choice(letters) for x in range(nr_letters)],[random.choice(numbers) for x in range(nr_numbers)],[random.choice(symbols) for x in range(nr_symbols)]]
     password_list = [str(i) for sublist in _list for i in sublist]
+    password = random.shuffle(password_list)
     password = "".join(password_list)
     if len(password_entry.get())==0:
         password_entry.insert(0,password)
