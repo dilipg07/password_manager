@@ -1,4 +1,12 @@
 from tkinter import *
+from tkinter import messagebox
+def delete():
+    website_entry.delete(0,END)
+    password_entry.delete(0,END)
+def save():
+    with open("data.txt",mode="a") as f:
+        f.write(f"{website_entry.get()} | {email_entry.get()} | {password_entry.get()}\n")
+    delete()
 window = Tk()
 window.title("Password Manager")
 window.config(padx=50,pady=50)
@@ -25,7 +33,7 @@ password_entry.grid(row=3,column=1)
 # Button
 generate_button =Button(text="Generate")
 generate_button.grid(row=3,column=2)
-add_button = Button(text="Add",width=36)
+add_button = Button(text="Add",width=36,command=save)
 add_button.grid(row=4,column=1,columnspan=2)
 
 window.mainloop()
