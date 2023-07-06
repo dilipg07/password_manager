@@ -22,6 +22,24 @@ def generate():
     else:
         password_entry.delete(0,END)
         password_entry.insert(0,password)
+# search 
+def search_credentials():
+    with open("data.json","r+") as f:
+        data = json.load(f)
+        if website_entry.get() in data :
+            print("found")
+            prompti = messagebox.askyesno(title="Same details are found!!",message=f"These are the details in database\nEmail: {data[website_entry.get()]['Email']}\nPassword: {data[website_entry.get()]['Password']}")
+            if prompti:
+                f.seek(0)
+                data[website_entry.get()]['Email'] = email_entry.get()
+                data[website_entry.get()]['Password'] = password_entry.get()
+                json.dump(data,f,indent=4)
+                f.truncate()
+                delete()
+            else:
+                delete()
+        else:
+            prompte = messagebox.showinfo(title="No matches",message="No matches found in data base")
 # GUI
 def delete():
     website_entry.delete(0,END)
@@ -68,8 +86,8 @@ email.grid(row=2,column=0)
 password = Label(text="Password:")
 password.grid(row=3,column=0)
 # Entry
-website_entry = Entry(width=43)
-website_entry.grid(row=1,column=1,columnspan=2)
+website_entry = Entry(width=33)
+website_entry.grid(row=1,column=1)
 website_entry.focus()
 # ---- field-----
 # email_entry = Entry(width=43)
@@ -81,9 +99,10 @@ email_entry.grid(row=2,column=1,columnspan=2)
 password_entry = Entry(width=33)
 password_entry.grid(row=3,column=1)
 # Button
-generate_button =Button(text="Generate",command=generate)
+generate_button =Button(text="Generate",command=generate,width=7)
 generate_button.grid(row=3,column=2)
 add_button = Button(text="Add",width=36,command=save)
 add_button.grid(row=4,column=1,columnspan=2)
-
+search_button = Button(text="Search",command=search_credentials,width=7)
+search_button.grid(row=1,column=2)
 window.mainloop()
