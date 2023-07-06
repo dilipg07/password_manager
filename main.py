@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter import ttk
 import random
+import json
 #Password Generator Project
 def generate():
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -27,13 +28,31 @@ def delete():
     password_entry.delete(0,END)
     email_entry.delete(0,END)
 def save():
+    new_data = {
+        website_entry.get() : {
+            "Email" : email_entry.get(),
+            "Password" : password_entry.get()
+        }
+    }
     is_okay = messagebox.askokcancel(title=website_entry.get(), message=f"These are the entered details:\nEmail: {email_entry.get()}\nPassword: {password_entry.get()}\nProceed?")
     if (len(email_entry.get())==0 or len(password_entry.get())==0 or len(website_entry.get())==0) and is_okay:
         messagebox.showwarning(title="Oops!!",message="Dont leave the fields empty")
     elif is_okay:
-        with open("data.txt",mode="a") as f:
-            f.write(f"{website_entry.get()} | {email_entry.get()} | {password_entry.get()}\n")
-        delete()
+        try:
+            with open("data.json", mode="r") as f:
+                try:
+                    data = json.load(f)
+                except json.JSONDecodeError:
+                    data = dict()
+        except FileNotFoundError :
+            with open("data.json",mode="w") as f:
+                json.dump(new_data,f,indent=4)
+        else:
+            data.update(new_data)
+            with open("data.json",mode="w") as f:
+                json.dump(data,f,indent=4)
+        finally:
+            delete()
 window = Tk()
 window.title("Password Manager")
 window.config(padx=50,pady=50)
