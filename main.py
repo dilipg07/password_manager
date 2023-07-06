@@ -24,22 +24,28 @@ def generate():
         password_entry.insert(0,password)
 # search 
 def search_credentials():
-    with open("data.json","r+") as f:
-        data = json.load(f)
-        if website_entry.get() in data :
-            print("found")
-            prompti = messagebox.askyesno(title="Same details are found!!",message=f"These are the details in database\nEmail: {data[website_entry.get()]['Email']}\nPassword: {data[website_entry.get()]['Password']}")
-            if prompti:
-                f.seek(0)
-                data[website_entry.get()]['Email'] = email_entry.get()
-                data[website_entry.get()]['Password'] = password_entry.get()
-                json.dump(data,f,indent=4)
-                f.truncate()
-                delete()
-            else:
-                delete()
-        else:
-            prompte = messagebox.showinfo(title="No matches",message="No matches found in data base")
+    try:
+        with open("data.json","r+") as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                data = dict()
+    finally:
+            with open("data.json","r+") as f:
+                if website_entry.get() in data :
+                    print("found")
+                    prompti = messagebox.askyesno(title="Same details are found!!",message=f"These are the details in database\nEmail: {data[website_entry.get()]['Email']}\nPassword: {data[website_entry.get()]['Password']}")
+                    if prompti:
+                        f.seek(0)
+                        data[website_entry.get()]['Email'] = email_entry.get()
+                        data[website_entry.get()]['Password'] = password_entry.get()
+                        json.dump(data,f,indent=4)
+                        f.truncate()
+                        delete()
+                    else:
+                        delete()
+                else:
+                    prompte = messagebox.showinfo(title="No matches",message="No matches found in data base")
 # GUI
 def delete():
     website_entry.delete(0,END)
